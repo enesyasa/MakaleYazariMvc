@@ -1,0 +1,42 @@
+﻿@model IEnumerable<MakaleYazariMvc.Models.Entities.Article>
+
+<h1>Tüm Makaleler</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Başlık</th>
+            <th>Yazar</th>
+            <th>Kategoriler</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>@article.Title</td>
+                <td>@article.ApplicationUser.UserName</td> 
+                <td>
+                    @foreach (var category in article.ArticleCategories)
+                    {
+                        <span>@category.Category.Name</span> 
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-info">Detay</a>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a href="@Url.Action("Edit", "Article", new { id = article.Id })" class="btn btn-primary">Düzenle</a>
+                        <a href="@Url.Action("Delete", "Article", new { id = article.Id })" class="btn btn-danger">Sil</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a href="@Url.Action("Create", "Article")" class="btn btn-success">Yeni Makale Oluştur</a>
+}

@@ -1,0 +1,25 @@
+﻿@using System.Security.Claims
+@model MakaleYazariMvc.Models.Entities.Article
+
+<h1>@Model.Title</h1>
+
+<p><strong>Yazar:</strong> @Model.ApplicationUser.UserName</p>
+<p><strong>İçerik:</strong></p>
+<p>@Model.Content</p>
+
+<h3>Kategoriler:</h3>
+<ul>
+    @foreach (var articleCategory in Model.ArticleCategories)
+    {
+        <li>@articleCategory.Category.Name</li>
+    }
+</ul>
+
+@if (User.Identity.IsAuthenticated)
+{
+    @if (Model.ApplicationUserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+    {
+        <a href="@Url.Action("Edit", "Article", new { id = Model.Id })" class="btn btn-primary">Düzenle</a>
+        <a href="@Url.Action("Delete", "Article", new { id = Model.Id })" class="btn btn-danger">Sil</a>
+    }
+}
